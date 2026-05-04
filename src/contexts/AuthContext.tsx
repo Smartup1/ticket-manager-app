@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { authService, LoginPayload } from "../services/auth.service";
+import { authService, LoginPayload } from "../app/services/auth.service";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 

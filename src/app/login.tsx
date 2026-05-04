@@ -1,16 +1,41 @@
 import { useState } from "react";
 import {
+  ActivityIndicator,
+  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useAuth } from "../hooks/useAuth";
 
-export default function Index() {
+export default function LoginScreen() {
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [remember, setRemember] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email.trim() || !senha.trim()) {
+      Alert.alert("Atenção", "Preencha e-mail e senha");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await login({ email, password: senha });
+      // O RouteGuard em _layout.tsx redireciona automaticamente após login
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.message ?? "E-mail ou senha inválidos";
+      Alert.alert("Erro ao entrar", msg);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -28,6 +53,9 @@ export default function Index() {
           style={styles.input}
           value={email}
           onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          returnKeyType="next"
         />
 
         {/* SENHA */}
@@ -38,6 +66,8 @@ export default function Index() {
           style={styles.input}
           value={senha}
           onChangeText={setSenha}
+          returnKeyType="done"
+          onSubmitEditing={handleLogin}
         />
 
         {/* OPTIONS */}
@@ -54,14 +84,22 @@ export default function Index() {
         </View>
 
         {/* BUTTON */}
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Entrar</Text>
+        <TouchableOpacity
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Entrar</Text>
+          )}
         </TouchableOpacity>
 
         {/* LINK */}
         <Text style={styles.footer}>
           Ainda não tem uma conta?{" "}
-          <Text style={styles.link}>Cadastrese</Text>
+          <Text style={styles.link}>Cadastre-se</Text>
         </Text>
       </View>
     </View>
@@ -150,6 +188,10 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 12,
     alignItems: "center",
+  },
+
+  buttonDisabled: {
+    opacity: 0.7,
   },
 
   buttonText: {
