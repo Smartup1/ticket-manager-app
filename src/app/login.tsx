@@ -10,32 +10,32 @@ import {
 } from "react-native";
 import { useAuth } from "../hooks/useAuth";
 
-export default function LoginScreen() {
-  const { login } = useAuth();
-
+export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [remember, setRemember] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = async () => {
+  const { login } = useAuth();
+
+  async function handleLogin() {
     if (!email.trim() || !senha.trim()) {
-      Alert.alert("Atenção", "Preencha e-mail e senha");
+      Alert.alert("Atenção", "Preencha e-mail e senha.");
       return;
     }
 
     setIsLoading(true);
     try {
-      await login({ email, password: senha });
-      // O RouteGuard em _layout.tsx redireciona automaticamente após login
-    } catch (err: any) {
-      const msg =
-        err?.response?.data?.message ?? "E-mail ou senha inválidos";
-      Alert.alert("Erro ao entrar", msg);
+      await login({ email: email.trim(), password: senha });
+      // O RouteGuard em _layout.tsx redireciona automaticamente após o login
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ?? "Verifique suas credenciais e tente novamente.";
+      Alert.alert("Erro ao entrar", message);
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -53,9 +53,9 @@ export default function LoginScreen() {
           style={styles.input}
           value={email}
           onChangeText={setEmail}
-          autoCapitalize="none"
           keyboardType="email-address"
-          returnKeyType="next"
+          autoCapitalize="none"
+          autoCorrect={false}
         />
 
         {/* SENHA */}
@@ -66,8 +66,6 @@ export default function LoginScreen() {
           style={styles.input}
           value={senha}
           onChangeText={setSenha}
-          returnKeyType="done"
-          onSubmitEditing={handleLogin}
         />
 
         {/* OPTIONS */}
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
   },
 
   buttonDisabled: {
-    opacity: 0.7,
+    opacity: 0.6,
   },
 
   buttonText: {
