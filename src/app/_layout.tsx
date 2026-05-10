@@ -1,6 +1,7 @@
+import { ApiProvider } from "@/contexts/api-client-context";
 import { Stack } from "expo-router";
 import { ActivityIndicator, View } from "react-native";
-import { AuthProvider, useAuthContext } from "../contexts/authContext";
+import { AuthProvider, useAuthContext } from "../contexts/auth-context";
 
 function RootLayoutNav() {
   const { isAuthenticated, isLoading } = useAuthContext();
@@ -26,8 +27,10 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
+    <ApiProvider>
+      <AuthProvider>
+        <RootLayoutNav />
+      </AuthProvider>
+    </ApiProvider>
   );
 }

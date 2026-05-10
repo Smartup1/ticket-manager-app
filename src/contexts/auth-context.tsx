@@ -7,14 +7,14 @@ import {
   useState
 } from "react";
 import { STORE_USER_TOKEN_KEY } from "../constants";
-import { SecureStoreService } from "../utils/secure-store/secure-store.service";
-import { AuthContextData, User } from "./authContext.types";
+import { SecureStoreService } from "../utils/secure-store/secure-store-service";
+import { AuthContextData, User } from "./auth-context-types";
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const secureStoreService = new SecureStoreService();
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuthContext() {
+export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuthContext must be used inside <AuthProvider>");

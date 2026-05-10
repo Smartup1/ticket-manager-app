@@ -8,16 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useAuthContext } from "../../contexts/authContext";
-import { AuthService } from "../../services/auth/auth.service";
-
-const authService = new AuthService();
+import { useAuthContext } from "../../contexts/auth-context";
+import { useAuthService } from "../../services/auth/auth-service";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { setToken } = useAuthContext();
+  const authService = useAuthService();
 
   async function handleLogin() {
     if (!email.trim() || !senha.trim()) {
@@ -84,12 +83,6 @@ export default function Login() {
             <Text style={styles.buttonText}>Entrar</Text>
           )}
         </TouchableOpacity>
-
-        {/* LINK */}
-        <Text style={styles.footer}>
-          Ainda não tem uma conta?{" "}
-          <Text style={styles.link}>Cadastre-se</Text>
-        </Text>
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import { sanitizeString } from "./string-sanitizer";
+import { sanitizeString } from "../data-sanitizers/string-sanitizer";
 
 describe('sanitizeString', () => {
   it('should trim valid string', () => {

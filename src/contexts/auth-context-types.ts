@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { UserRole } from "../services/auth/auth.types";
+import { UserRole } from "../services/auth/auth-types";
 
 export interface User {
   id: string;

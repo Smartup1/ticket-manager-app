@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { SecureStoreService } from './secure-store.service';
+import { SecureStoreService } from '../secure-store/secure-store-service';
 
 jest.mock('expo-secure-store');
 
